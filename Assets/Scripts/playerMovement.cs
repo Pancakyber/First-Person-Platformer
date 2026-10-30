@@ -25,11 +25,18 @@ public class playerMovement : MonoBehaviour
     public float staminaDrain = 20f;
     public float staminaRegenTime = 5f;
     public float staminaRegen = 50f;
-    
+
+    //health variable
+    public float maxHealth = 100f;
+    private float currentHealth;
+    public float staminaHealth = 50f;
+
+
 
     //UI 
 
     public Slider staminaBar;
+    public Slider healthBar;
     public CanvasGroup pauseMenu;
     private bool isPaused = false;
     
@@ -41,13 +48,21 @@ public class playerMovement : MonoBehaviour
     //key for sprint
 
     private bool isSprinting;
+    private bool isMoving;
      void Start()
     {
-        //Intialize Rigidbody and Stamina
+        //Intialize Rigidbody, Health and Stamina
         rb = GetComponent<Rigidbody>();
         currentStamina = maxStamina;
         currentSpeed = movementSpeed;
+        currentHealth = maxHealth;
 
+        //initialize health UI
+        if(healthBar != null )
+        {
+            healthBar.maxValue = maxHealth;
+            healthBar.value = currentHealth;
+        }
         //intialize stamina UI
         if(staminaBar != null)
         {
@@ -56,7 +71,7 @@ public class playerMovement : MonoBehaviour
             Debug.Log("staminareset");
         }
         playerCollider = GetComponent<Collider>();
-
+        //initialize pausemenu
         pauseMenu.alpha = 0f;
     }
 
@@ -66,10 +81,12 @@ public class playerMovement : MonoBehaviour
         isSprinting = Input.GetKey(KeyCode.LeftShift) && currentStamina > 0;
         Debug.Log(isSprinting);
 
+        //UPDATE MOVEMENT
         Movement();
 
+        isMoving = Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
 
-        if(isSprinting)
+        if (isSprinting && isMoving)
         {
             currentSpeed = sprintSpeed;
             drainStamina();
@@ -84,12 +101,18 @@ public class playerMovement : MonoBehaviour
         {
             staminaBar.value = currentStamina;
         }
-         // Check for Space key down and if the player is currently on the ground
+
+        if (healthBar != null)
+        {
+            healthBar.value = currentHealth;
+        }
+        // Check for Space key down and if the player is currently on the ground
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             // Apply an instant upwards physical force
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+        // check if escape is pressed, if it is pause or unpause
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
@@ -122,7 +145,7 @@ public class playerMovement : MonoBehaviour
 
         rb.MovePosition(transform.position + transform.TransformDirection(movement) * currentSpeed * Time.deltaTime);
 
-
+        
     }
 
     //drain stamina
@@ -178,6 +201,20 @@ public class playerMovement : MonoBehaviour
         Time.timeScale = 1f;
         Debug.Log("game resumed");
         isPaused = false;
+    }
+    public void Heal(float amount)
+    {
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Prevents health from exceeding max
+
+        Debug.Log("Player healed. Current health: " + currentHealth);
+    }
+    public void Damage(float amount)
+    {
+        currentHealth -= amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Prevents health from exceeding max
+
+        Debug.Log("Player Damaged. Current health: " + currentHealth);
     }
 
 }
