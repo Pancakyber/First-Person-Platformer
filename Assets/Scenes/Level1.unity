@@ -4178,6 +4178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: laser
       objectReference: {fileID: 0}
+    - target: {fileID: 5237102354516301697, guid: 691a29e41e4d7034b8eb687a66d68434, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: df04120c35ea95d49b3daf36ed4785c7, type: 2}
     - target: {fileID: 8997109283799291257, guid: 691a29e41e4d7034b8eb687a66d68434, type: 3}
       propertyPath: m_LocalPosition.x
       value: 55.7

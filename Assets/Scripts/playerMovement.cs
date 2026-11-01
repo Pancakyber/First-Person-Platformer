@@ -125,7 +125,7 @@ public class playerMovement : MonoBehaviour
                 Cursor.visible = true;
                 Time.timeScale = 0f;
             }
-            else
+            elsed
             {
                 isDead = false;
                 Cursor.lockState = CursorLockMode.Locked;
