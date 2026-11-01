@@ -121,7 +121,15 @@ public class playerMovement : MonoBehaviour
                 deathMenu.alpha = 1f;          // Makes it visible
                 deathMenu.interactable = true;  // Allows clicking buttons
                 deathMenu.blocksRaycasts = true; ;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 Time.timeScale = 0f;
+            }
+            else
+            {
+                isDead = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
         }
         
@@ -208,6 +216,8 @@ public class playerMovement : MonoBehaviour
         pauseMenu.interactable = true;  // Allows clicking buttons
         pauseMenu.blocksRaycasts = true; ;
         Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Debug.Log("game paused");
         isPaused = true;
     }
@@ -216,7 +226,9 @@ public class playerMovement : MonoBehaviour
     {
         pauseMenu.alpha = 0f;          
         pauseMenu.interactable = false;  
-        pauseMenu.blocksRaycasts = false; ;
+        pauseMenu.blocksRaycasts = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         Time.timeScale = 1f;
         Debug.Log("game resumed");
         isPaused = false;

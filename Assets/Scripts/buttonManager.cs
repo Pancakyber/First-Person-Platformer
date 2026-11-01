@@ -43,4 +43,8 @@ public class buttonManager : MonoBehaviour
             target.SetActive(!target.activeSelf);
         }
     }
+    public void RestartCurrentScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
