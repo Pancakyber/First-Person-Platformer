@@ -38,7 +38,11 @@ public class playerMovement : MonoBehaviour
     public Slider staminaBar;
     public Slider healthBar;
     public CanvasGroup pauseMenu;
+    public CanvasGroup deathMenu;
     private bool isPaused = false;
+    private bool isDead = false;
+    public GameObject pauseMenuDisabled;
+
     
 
     //Rigidbody
@@ -106,6 +110,21 @@ public class playerMovement : MonoBehaviour
         {
             healthBar.value = currentHealth;
         }
+        //check health for death
+        if (currentHealth <= 0)
+        {
+            isDead = true;
+            if (isDead)
+            {
+                pauseMenuDisabled.SetActive(false);
+                Debug.Log("Player Died");
+                deathMenu.alpha = 1f;          // Makes it visible
+                deathMenu.interactable = true;  // Allows clicking buttons
+                deathMenu.blocksRaycasts = true; ;
+                Time.timeScale = 0f;
+            }
+        }
+        
         // Check for Space key down and if the player is currently on the ground
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
